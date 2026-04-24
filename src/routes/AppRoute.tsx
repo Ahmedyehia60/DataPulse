@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Wrapper from "../layout/wrapper";
 import DashBoard from "../pages/Dashboard/DashBoard";
 import Inventory from "../pages/Inventory/Inventory";
 import Orders from "../pages/Orders/Orders";
-import Analytics from "./../pages/Analytics/Analytics";
-import Settings from "./../pages/Settings/Settings";
+import Analytics from "../pages/Analytics/Analytics";
+import Settings from "../pages/Settings/Settings";
+import Wrapper from "../layout/Wrapper";
 
 function AppRoute() {
   return (

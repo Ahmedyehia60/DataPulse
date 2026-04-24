@@ -4,12 +4,14 @@ import Sidebar from "./Sidebar";
 
 function Wrapper() {
   return (
-    <div>
+    <div className="flex h-screen">
       <Sidebar />
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
+      <div className="flex-1 flex flex-col">
+        <Navbar />
+        <main className="flex-1 p-4">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
