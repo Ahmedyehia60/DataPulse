@@ -1,6 +1,9 @@
 import { Bell, Search } from "lucide-react";
+import { useState } from "react";
+import PopUp from "../components/PopUp";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6">
       <div className="flex items-center bg-gray-100 px-4 py-2 rounded-full w-100">
@@ -12,9 +15,14 @@ const Navbar = () => {
         />
       </div>
       <div className="flex items-center gap-6">
-        <div className="relative cursor-pointer">
+        <div
+          className="relative cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <Bell className="text-gray-600" />
           <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+
+          {isOpen && <PopUp />}
         </div>
         <div className="flex items-center gap-3 border-l pl-4">
           <div className="text-right">
