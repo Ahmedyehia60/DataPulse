@@ -2,7 +2,7 @@ import { Download } from "lucide-react";
 
 const Orders = () => {
   return (
-    <div className="flex flex-col gap-8">
+    <div>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Order History</h1>
@@ -19,8 +19,20 @@ const Orders = () => {
           <span className="font-semibold text-sm ">Export CSV</span>
         </button>
       </div>
-
-    
+      <div className="flex flex-col md:flex-row md:items-center gap-3 mt-8">
+        <button className="flex  px-6 py-2.5 cursor-pointer bg-white border border-gray-200 text-gray-700 rounded-2xl shadow-sm hover:bg-gray-50 transition-all active:scale-95 group">
+          <span className="font-semibold text-sm ">All</span>
+        </button>
+        <button className="flex  px-6 py-2.5 cursor-pointer bg-white border border-gray-200 text-gray-700 rounded-2xl shadow-sm hover:bg-gray-50 transition-all active:scale-95 group">
+          <span className="font-semibold text-sm ">Complete</span>
+        </button>
+        <button className="flex  px-6 py-2.5 cursor-pointer bg-white border border-gray-200 text-gray-700 rounded-2xl shadow-sm hover:bg-gray-50 transition-all active:scale-95 group">
+          <span className="font-semibold text-sm ">Pending</span>
+        </button>
+        <button className="flex  px-6 py-2.5 cursor-pointer bg-white border border-gray-200 text-gray-700 rounded-2xl shadow-sm hover:bg-gray-50 transition-all active:scale-95 group">
+          <span className="font-semibold text-sm ">Cancelled</span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -11,12 +11,12 @@ function DashBoard() {
         <StatBox />
         <StatBox />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="md:col-span-2">
           <AreaChart />
         </div>
 
-        <div className="md:col-span-1">
+        <div className="md:col-span-1bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
           <BarChart />
         </div>
       </div>
