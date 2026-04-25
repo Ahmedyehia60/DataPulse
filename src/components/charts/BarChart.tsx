@@ -1,4 +1,5 @@
 import ReactECharts from "echarts-for-react";
+import TrendingProducts from "../TrendingProducts";
 
 const option = {
   xAxis: {
@@ -50,10 +51,13 @@ const option = {
 };
 export default function BarChart() {
   return (
-    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
-      <p className="font-bold">Inventory vs Store</p>
-      <p className="font-light">Real time stock comparison</p>
-      <ReactECharts option={option} style={{ height: 300 }} />
+    <div>
+      <div className="border-b border-gray-200 p-3">
+        <p className="font-bold">Inventory vs Store</p>
+        <p className="font-light">Real time stock comparison</p>
+        <ReactECharts option={option} style={{ height: 300 }} />
+      </div>
+      <TrendingProducts />
     </div>
   );
 }
