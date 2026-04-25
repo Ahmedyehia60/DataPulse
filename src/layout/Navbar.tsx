@@ -1,6 +1,29 @@
 import { Bell, Menu, Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import PopUp from "../components/PopUp";
+import SearchModal from "../components/SearchModal";
 
 const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<boolean>(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3">
       <div className="flex items-center">
@@ -22,9 +45,23 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
       </div>
 
       <div className="flex items-center gap-4 md:gap-6">
-        <div className="relative cursor-pointer">
-          <Bell className="text-gray-600" />
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        <div className="md:hidden flex justify-end">
+          <Search
+            className="text-gray-500 w-5 h-5 mr-2"
+            onClick={() => setSearch(!search)}
+          />
+        </div>
+        <div>{search && <SearchModal />}</div>
+        <div ref={popupRef} className="relative">
+          <div
+            className="cursor-pointer relative"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <Bell className="text-gray-600" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </div>
+
+          {isOpen && <PopUp />}
         </div>
 
         <div className="flex items-center gap-3 border-l pl-4 border-gray-200">
@@ -32,7 +69,6 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
             <p className="text-sm font-semibold leading-tight">RORO</p>
             <p className="text-xs text-gray-500">System Admin</p>
           </div>
-
           <img
             src="https://i.pravatar.cc/40"
             alt="profile"
