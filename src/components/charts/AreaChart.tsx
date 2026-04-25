@@ -64,7 +64,7 @@ const option = {
 
 export default function AreaChart() {
   return (
-    <div>
+    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
       <p className="font-bold">Demand vs Supply Trend</p>
       <ReactECharts option={option} style={{ height: 300 }} />
     </div>

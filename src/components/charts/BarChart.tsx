@@ -50,7 +50,7 @@ const option = {
 };
 export default function BarChart() {
   return (
-    <div>
+    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
       <p className="font-bold">Inventory vs Store</p>
       <p className="font-light">Real time stock comparison</p>
       <ReactECharts option={option} style={{ height: 300 }} />
