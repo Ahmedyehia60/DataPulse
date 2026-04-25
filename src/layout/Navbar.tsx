@@ -61,7 +61,7 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
             <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </div>
 
-          {isOpen && <PopUp />}
+          {isOpen && <PopUp onClose={() => setIsOpen(false)} />}
         </div>
 
         <div className="flex items-center gap-3 border-l pl-4 border-gray-200">
