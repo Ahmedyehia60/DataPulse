@@ -1,6 +1,6 @@
-import { Search, X, Clock, ArrowUpRight } from "lucide-react";
+import { Search, Clock, ArrowUpRight } from "lucide-react";
 
-function SearchModal({ onClose }: { onClose?: () => void }) {
+function SearchModal() {
   const recentSearches = [
     "Monthly Analytics",
     "Inventory Report",
@@ -17,14 +17,6 @@ function SearchModal({ onClose }: { onClose?: () => void }) {
           placeholder="Search anything..."
           className="bg-transparent outline-none w-full text-sm font-medium text-gray-700 placeholder:text-gray-400"
         />
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="hover:bg-gray-200 p-1 rounded-full transition-colors"
-          >
-            <X className="w-4 h-4 text-gray-400" />
-          </button>
-        )}
       </div>
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
@@ -49,13 +41,6 @@ function SearchModal({ onClose }: { onClose?: () => void }) {
             </div>
           ))}
         </div>
-      </div>
-      <div className="bg-gray-50 p-3 flex justify-center border-t border-gray-50">
-        <p className="text-[10px] text-gray-400">
-          Tip: Use{" "}
-          <kbd className="bg-white border px-1 rounded shadow-sm">Esc</kbd> to
-          close
-        </p>
       </div>
     </div>
   );

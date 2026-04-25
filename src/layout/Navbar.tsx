@@ -6,22 +6,22 @@ import SearchModal from "../components/SearchModal";
 const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<boolean>(false);
-  const popupRef = useRef<HTMLDivElement>(null);
+  const bellRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+      if (bellRef.current && !bellRef.current.contains(target)) {
         setIsOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(target)) {
+        setSearch(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -45,14 +45,14 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
       </div>
 
       <div className="flex items-center gap-4 md:gap-6">
-        <div className="md:hidden flex justify-end">
+        <div className="md:hidden flex justify-end" ref={searchRef}>
           <Search
             className="text-gray-500 w-5 h-5 mr-2"
             onClick={() => setSearch(!search)}
           />
         </div>
         <div>{search && <SearchModal />}</div>
-        <div ref={popupRef} className="relative">
+        <div ref={bellRef} className="relative">
           <div
             className="cursor-pointer relative"
             onClick={() => setIsOpen(!isOpen)}
