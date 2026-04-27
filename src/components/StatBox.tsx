@@ -2,13 +2,13 @@ import { Box, TrendingUp } from "lucide-react";
 
 function StatBox() {
   return (
-    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
+    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-3">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h6 className="text-gray-500 font-medium text-lg mb-2">
+          <h6 className="text-gray-500 font-medium text-md mb-2">
             Total Products
           </h6>
-          <p className="font-bold text-3xl text-gray-900">1,250</p>
+          <p className="font-bold text-2xl text-gray-900">1,250</p>
         </div>
 
         <div className="bg-blue-50 p-3 rounded-2xl">

@@ -11,6 +11,9 @@ const option = {
       },
     },
   },
+  tooltip: {
+    trigger: "axis",
+  },
   yAxis: {
     type: "category",
     data: ["Prod 1", "Prod 2", "Prod 3", "Prod 4", "Prod 5", "Prod 6"],

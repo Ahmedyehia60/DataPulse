@@ -175,8 +175,6 @@ const Orders = () => {
     },
   ];
 
-
-  
   return (
     <div>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -238,7 +236,6 @@ const Orders = () => {
             <p>Status</p>
           </div>
 
-         
           <div className="max-h-[calc(90vh-300px)] overflow-y-auto min-w-full w-max lg:w-full">
             {data.map((order) => (
               <div
