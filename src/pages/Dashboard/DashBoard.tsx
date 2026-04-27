@@ -1,6 +1,6 @@
 import StatBox from "../../components/StatBox";
-import AreaChart from "../../components/charts/AreaChart";
-import BarChart from "../../components/charts/BarChart";
+import AreaChart from "../../components/DashboardCharts/AreaChart";
+import BarChart from "../../components/DashboardCharts/BarChart";
 
 function DashBoard() {
   return (
