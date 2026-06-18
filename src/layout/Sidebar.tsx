@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LogOut,
   LayoutDashboard,
@@ -25,7 +25,13 @@ function Sidebar({
     { name: "Analytics", path: "analytics", icon: BarChart3 },
     { name: "Settings", path: "settings", icon: Settings },
   ];
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
   return (
     <div
       className={`
@@ -73,7 +79,9 @@ function Sidebar({
         <div className="mt-auto pt-4 border-t border-gray-200">
           <div className="flex items-center gap-3 cursor-pointer p-5 rounded transition duration-200 hover:bg-[#b4405d]/10 text-[#b4405d]">
             <LogOut />
-            <a href="#">Logout</a>
+            <button className="cursor-pointer" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </div>
       </nav>
