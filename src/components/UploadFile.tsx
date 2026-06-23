@@ -30,16 +30,16 @@ export const UploadFile: React.FC = () => {
 
     setIsLoading(true);
     setMessage(null);
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("fileType", step);
 
     try {
-      const response = await fetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/upload?type=${step}`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: selectedFile,
+        },
+      );
 
       const resData = await response.json();
 
@@ -55,12 +55,48 @@ export const UploadFile: React.FC = () => {
             setMessage(null);
           }, 1500);
         } else {
+          localStorage.removeItem("isNewBusiness");
           setTimeout(() => {
             navigate("/");
           }, 1500);
         }
       } else {
         setMessage({ type: "error", text: resData.message || "Upload failed" });
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: "Server error, please check connection.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSkipOrders = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/upload?type=new-store",
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      if (response.ok) {
+        localStorage.setItem("isNewBusiness", "true");
+        setMessage({
+          type: "success",
+          text: "Welcome! Setting up your new store dashboard...",
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        setMessage({
+          type: "error",
+          text: "Failed to initialize new store setup.",
+        });
       }
     } catch (error) {
       setMessage({
@@ -144,22 +180,32 @@ export const UploadFile: React.FC = () => {
             </p>
           )}
         </div>
-
-        <button
-          onClick={handleUpload}
-          disabled={isLoading || !selectedFile}
-          className={`w-full py-3.5 px-4 text-white font-semibold rounded-xl text-sm shadow-md transition-all ${
-            isLoading || !selectedFile
-              ? "bg-indigo-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700"
-          }`}
-        >
-          {isLoading
-            ? "Processing file..."
-            : step === "inventory"
-              ? "Continue to Orders"
-              : "Finish Onboarding"}
-        </button>
+        <div className="flex flex-col gap-2.5 w-full">
+          <button
+            onClick={handleUpload}
+            disabled={isLoading || !selectedFile}
+            className={`w-full py-3.5 px-4 text-white font-semibold rounded-xl text-sm shadow-md transition-all ${
+              isLoading || !selectedFile
+                ? "bg-indigo-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            {isLoading
+              ? "Processing file..."
+              : step === "inventory"
+                ? "Continue to Orders"
+                : "Finish Onboarding"}
+          </button>
+          {step === "orders" && !isLoading && (
+            <button
+              type="button"
+              onClick={handleSkipOrders}
+              className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all cursor-pointer"
+            >
+              I am a new store (No sales history yet)
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

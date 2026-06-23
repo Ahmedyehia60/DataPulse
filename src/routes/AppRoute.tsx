@@ -7,20 +7,26 @@ import Settings from "../pages/Settings/Settings";
 import Wrapper from "../layout/Wrapper";
 import { AuthPage } from "../pages/Login/Login";
 import ProtectedRoute from "./ProtectedRoute";
+import { UploadFile } from "../components/UploadFile";
+import { OnboardingGate } from "../components/onboardingGate";
 
 function AppRoute() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Wrapper />}>
-            <Route index element={<DashBoard />} />
-            <Route path="inventory" element={<Inventory />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="settings" element={<Settings />} />
+          <Route path="upload" element={<UploadFile />} />
+          <Route element={<OnboardingGate />}>
+            <Route path="/" element={<Wrapper />}>
+              <Route index element={<DashBoard />} />
+              <Route path="inventory" element={<Inventory />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="analytics" element={<Analytics />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
           </Route>
         </Route>
+
         <Route path="login" element={<AuthPage />} />
       </Routes>
     </BrowserRouter>
