@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import type { InventoryRow } from "../../utils/types";
-import InventoryPagination from "../../components/Inventory/InventoryPagination";
 import InventoryTable from "../../components/Inventory/InventoryTable";
-import InventoryToolbar from "../../components/Inventory/InventoryToolbar";
+import Toolbar from "../../components/Toolbar";
+import Pagination from "../../components/Pagination";
 
 function Inventory() {
   const [rows, setRows] = useState<InventoryRow[]>([]);
@@ -102,7 +102,7 @@ function Inventory() {
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <InventoryToolbar
+        <Toolbar
           search={search}
           pageSize={pageSize}
           onSearchChange={setSearch}
@@ -117,7 +117,7 @@ function Inventory() {
           />
         </div>
 
-        <InventoryPagination
+        <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           visibleStart={visibleStart}

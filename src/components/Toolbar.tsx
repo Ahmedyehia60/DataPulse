@@ -1,19 +1,19 @@
 import { Search } from "lucide-react";
-import { PAGE_SIZE_OPTIONS } from "../../utils/pagination";
+import { PAGE_SIZE_OPTIONS } from "../utils/pagination";
 
-type InventoryToolbarProps = {
+type ToolbarProps = {
   search: string;
   pageSize: number;
   onSearchChange: (value: string) => void;
   onPageSizeChange: (value: number) => void;
 };
 
-function InventoryToolbar({
+function Toolbar({
   search,
   pageSize,
   onSearchChange,
   onPageSizeChange,
-}: InventoryToolbarProps) {
+}: ToolbarProps) {
   return (
     <div className="flex flex-col gap-3 border-b border-gray-100 p-4 md:flex-row md:items-center md:justify-between">
       <div className="flex h-11 w-full items-center rounded-xl bg-gray-50 px-3 ring-1 ring-gray-100 md:max-w-sm">
@@ -45,4 +45,4 @@ function InventoryToolbar({
   );
 }
 
-export default InventoryToolbar;
+export default Toolbar;

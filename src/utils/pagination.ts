@@ -11,3 +11,13 @@ export const getPageNumbers = (currentPage: number, totalPages: number) => {
 
   return pages;
 };
+export const formatOrderDate = (date: string) =>
+  new Date(date).toLocaleDateString("en-US");
+
+export const formatCurrency = (value: string | number) =>
+  `$${Number(value).toFixed(2)}`;
+
+export const statusClassName = (status: string) =>
+  status === "active"
+    ? "bg-green-100 text-green-700"
+    : "bg-amber-100 text-amber-700";
