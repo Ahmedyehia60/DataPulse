@@ -26,7 +26,7 @@ function Analytics() {
       <KPISection
         totalRevenue={data.totalRevenue}
         growthPercent={data.growthPercent}
-        bestMonth={data.months[data.bestMonthIndex]}
+        bestMonth={data.bestMonth}
         forecast1={data.forecast1}
         accuracy={data.accuracy}
       />
