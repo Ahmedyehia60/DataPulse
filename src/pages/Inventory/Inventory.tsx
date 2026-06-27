@@ -25,7 +25,7 @@ function Inventory() {
         }
 
         const result = await response.json();
-        setRows(result.data || []);
+        setRows(Array.isArray(result) ? result : result.data || []);
       } catch {
         setError("Could not load inventory data.");
       } finally {

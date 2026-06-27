@@ -56,7 +56,9 @@ function InventoryTable({
                   key={column}
                   className="whitespace-nowrap px-5 py-4 text-gray-700"
                 >
-                  {renderCellValue(column, row[column])}
+                  {column.toLowerCase().trim() === "id"
+                    ? pageStartIndex + rowIndex + 1
+                    : renderCellValue(column, row[column])}
                 </td>
               ))}
             </tr>

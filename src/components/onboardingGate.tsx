@@ -11,19 +11,12 @@ export const OnboardingGate = () => {
         const response = await fetch("http://localhost:5000/api/inventory", {
           credentials: "include",
         });
+
         if (response.ok) {
           const result = await response.json();
-
           const hasInventory =
             result.length > 0 || (result.data && result.data.length > 0);
-
-          if (!hasInventory) {
-            setIsOnboarded(false);
-            return;
-          }
-          const isNewBusiness =
-            localStorage.getItem("isNewBusiness") === "true";
-          if (isNewBusiness) {
+          if (hasInventory) {
             setIsOnboarded(true);
             return;
           }
@@ -33,11 +26,13 @@ export const OnboardingGate = () => {
               credentials: "include",
             },
           );
+
           if (ordersResponse.ok) {
             const ordersResult = await ordersResponse.json();
             const hasOrders =
               ordersResult.length > 0 ||
               (ordersResult.data && ordersResult.data.length > 0);
+
             setIsOnboarded(hasOrders);
           } else {
             setIsOnboarded(false);
