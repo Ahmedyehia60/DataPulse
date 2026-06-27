@@ -23,7 +23,9 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/orders");
+        const response = await fetch("http://localhost:5000/api/orders", {
+          credentials: "include",
+        });
         if (response.ok) {
           const result = await response.json();
           setOrders(result.data || result);

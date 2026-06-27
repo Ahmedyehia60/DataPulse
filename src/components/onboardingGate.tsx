@@ -8,7 +8,9 @@ export const OnboardingGate = () => {
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/inventory");
+        const response = await fetch("http://localhost:5000/api/inventory", {
+          credentials: "include",
+        });
         if (response.ok) {
           const result = await response.json();
 
@@ -27,6 +29,9 @@ export const OnboardingGate = () => {
           }
           const ordersResponse = await fetch(
             "http://localhost:5000/api/orders",
+            {
+              credentials: "include",
+            },
           );
           if (ordersResponse.ok) {
             const ordersResult = await ordersResponse.json();
