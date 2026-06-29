@@ -7,10 +7,17 @@ import type { OrderItem } from "../../utils/types";
 
 type OrdersTableProps = {
   orders: OrderItem[];
+  totalOrders: number; // الإجمالي الكلي للأوردرات
+  currentPage: number; // الصفحة الحالية
+  pageSize: number; // حجم الصفحة
 };
 
-function OrdersTable({ orders }: OrdersTableProps) {
-
+function OrdersTable({
+  orders,
+  totalOrders,
+  currentPage,
+  pageSize,
+}: OrdersTableProps) {
   const columns = [
     "id",
     "transaction_number",
@@ -21,7 +28,6 @@ function OrdersTable({ orders }: OrdersTableProps) {
     "total_price",
     "status",
   ];
-
 
   const formatColumnHeader = (key: string) => {
     return key
@@ -72,7 +78,11 @@ function OrdersTable({ orders }: OrdersTableProps) {
                       {(() => {
                         switch (column) {
                           case "id":
-                            const reverseId = orders.length - rowIndex;
+                            // المعادلة الجديدة لحساب الرقم العكسي الثابت عبر الصفحات
+                            const reverseId =
+                              totalOrders -
+                              (currentPage - 1) * pageSize -
+                              rowIndex;
                             return (
                               <span className="font-medium text-gray-400">
                                 #{reverseId}

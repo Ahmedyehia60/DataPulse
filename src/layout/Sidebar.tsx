@@ -5,6 +5,7 @@ import {
   Boxes,
   ShoppingCart,
   BarChart3,
+  Package,
   Settings,
   X,
 } from "lucide-react";
@@ -23,6 +24,7 @@ function Sidebar({
     { name: "Inventory", path: "inventory", icon: Boxes },
     { name: "Orders", path: "orders", icon: ShoppingCart },
     { name: "Analytics", path: "analytics", icon: BarChart3 },
+    { name: "Bundles", path: "bundles", icon: Package },
     { name: "Settings", path: "settings", icon: Settings },
   ];
   const navigate = useNavigate();

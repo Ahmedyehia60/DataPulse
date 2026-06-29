@@ -1,6 +1,6 @@
 import StatBox from "../../components/StatBox";
 import AreaChart from "../../components/DashboardCharts/AreaChart";
-import BarChart from "../../components/DashboardCharts/BarChart";
+import TrendingProducts from "../../components/TrendingProducts";
 import { useDashboardData } from "../../hooks/useDashboardData";
 
 function DashBoard() {
@@ -40,8 +40,8 @@ function DashBoard() {
           <AreaChart chart={data.demandSupplyTrendChart} />
         </div>
 
-        <div className="md:col-span-1 bg-white shadow-sm border border-gray-100 rounded-2xl p-6">
-          <BarChart chart={data.topTrendingStockChart} />
+        <div className="md:col-span-1 bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
+          <TrendingProducts products={data.topTrendingStockChart.products} />
         </div>
       </div>
     </div>
