@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const ANALYTICS_API_URL = "http://127.0.0.1:8000/api/analytics";
+const ANALYTICS_API_URL = "http://localhost:5000/api/analytics";
 
 type LowStockItem = {
   name: string;
@@ -44,12 +44,27 @@ type AnalyticsApiResponse = {
 
 export const useAnalyticsData = () => {
   const [apiData, setApiData] = useState<AnalyticsApiResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(ANALYTICS_API_URL)
-      .then((res) => res.json())
-      .then((data: AnalyticsApiResponse) => setApiData(data))
-      .catch((err) => console.error("Analytics API Error:", err));
+    fetch(ANALYTICS_API_URL, { credentials: "include" })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to load analytics");
+        }
+
+        return res.json();
+      })
+      .then((data: AnalyticsApiResponse) => {
+        setApiData(data);
+        setError("");
+      })
+      .catch((err) => {
+        console.error("Analytics API Error:", err);
+        setError("Could not load analytics data.");
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const months = apiData?.salesTrendChart.months ?? [];
@@ -134,5 +149,7 @@ export const useAnalyticsData = () => {
     topProductsOption,
     underStockItems,
     trendOption,
+    isLoading,
+    error,
   };
 };

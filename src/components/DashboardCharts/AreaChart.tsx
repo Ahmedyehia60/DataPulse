@@ -1,6 +1,11 @@
 import ReactECharts from "echarts-for-react";
+import type { DashboardData } from "../../hooks/useDashboardData";
 
-const option = {
+type Props = {
+  chart: DashboardData["demandSupplyTrendChart"];
+};
+
+const buildOption = (chart: Props["chart"]) => ({
   tooltip: {
     trigger: "axis",
     backgroundColor: "#fff",
@@ -22,20 +27,7 @@ const option = {
   xAxis: {
     type: "category",
     boundaryGap: false,
-    data: [
-      "Feb 8",
-      "Feb 15",
-      "Feb 22",
-      "Mar 1",
-      "Mar 8",
-      "Mar 15",
-      "Mar 22",
-      "Mar 29",
-      "Apr 5",
-      "Apr 12",
-      "Apr 19",
-      "Apr 26",
-    ],
+    data: chart.labels,
     axisLine: {
       lineStyle: {
         color: "#eee",
@@ -73,9 +65,7 @@ const option = {
         width: 2,
         color: "#0ea5a4",
       },
-      data: [
-        700, 1200, 1350, 1350, 950, 1100, 1300, 1550, 1500, 1300, 1100, 1600,
-      ],
+      data: chart.demandUnits,
       areaStyle: {
         opacity: 1,
         color: {
@@ -101,7 +91,7 @@ const option = {
         width: 2,
         color: "#f97316",
       },
-      data: [950, 1250, 1220, 800, 1100, 550, 950, 850, 1300, 600, 950, 700],
+      data: chart.supplyUnits,
       areaStyle: {
         opacity: 1,
         color: {
@@ -118,10 +108,11 @@ const option = {
       },
     },
   ],
-};
-export default function AreaChart() {
+});
+
+export default function AreaChart({ chart }: Props) {
   return (
-    <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-6">
+    <div className="bg-white shadow-sm border border-gray-100 rounded-2xl p-6">
       <div className="flex items-center justify-between">
         <p className="font-bold">Demand vs Supply Trend</p>
         <select
@@ -134,7 +125,7 @@ export default function AreaChart() {
         </select>
       </div>
 
-      <ReactECharts option={option} style={{ height: 650 }} />
+      <ReactECharts option={buildOption(chart)} style={{ height: 650 }} />
     </div>
   );
 }

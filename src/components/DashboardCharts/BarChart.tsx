@@ -1,7 +1,12 @@
 import ReactECharts from "echarts-for-react";
 import TrendingProducts from "../TrendingProducts";
+import type { DashboardData } from "../../hooks/useDashboardData";
 
-const option = {
+type Props = {
+  chart: DashboardData["topTrendingStockChart"];
+};
+
+const buildOption = (chart: Props["chart"]) => ({
   xAxis: {
     type: "value",
     splitLine: {
@@ -16,7 +21,7 @@ const option = {
   },
   yAxis: {
     type: "category",
-    data: ["Prod 1", "Prod 2", "Prod 3", "Prod 4", "Prod 5", "Prod 6"],
+    data: chart.products.map((product) => product.name),
     inverse: true,
     axisLine: { show: false },
     axisTick: { show: false },
@@ -25,7 +30,7 @@ const option = {
     {
       name: "Inventory",
       type: "bar",
-      data: [120, 200, 150, 80, 70, 110],
+      data: chart.products.map((product) => product.currentStock),
       itemStyle: {
         color: "#F4511E",
         borderRadius: [0, 5, 5, 0],
@@ -36,7 +41,9 @@ const option = {
     {
       name: "Store",
       type: "bar",
-      data: [90, 130, 110, 60, 55, 95],
+      data: chart.products.map((product) =>
+        Math.round(product.currentStock * (1 + product.growthPercent / 100)),
+      ),
       itemStyle: {
         color: "#1A535C",
         borderRadius: [0, 5, 5, 0],
@@ -51,16 +58,17 @@ const option = {
     bottom: "3%",
     containLabel: true,
   },
-};
-export default function BarChart() {
+});
+
+export default function BarChart({ chart }: Props) {
   return (
     <div>
       <div className="border-b border-gray-200 p-3">
-        <p className="font-bold">Inventory vs Store</p>
-        <p className="font-light">Real time stock comparison</p>
-        <ReactECharts option={option} style={{ height: 300 }} />
+        <p className="font-bold">{chart.title}</p>
+        <p className="font-light">{chart.subtitle}</p>
+        <ReactECharts option={buildOption(chart)} style={{ height: 300 }} />
       </div>
-      <TrendingProducts />
+      <TrendingProducts products={chart.products} />
     </div>
   );
 }

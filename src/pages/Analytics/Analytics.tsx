@@ -10,6 +10,22 @@ import { TrendingUpDown } from "lucide-react";
 function Analytics() {
   const data = useAnalyticsData();
 
+  if (data.isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center text-sm font-semibold text-slate-500">
+        Loading analytics...
+      </div>
+    );
+  }
+
+  if (data.error) {
+    return (
+      <div className="rounded-xl border border-rose-100 bg-rose-50 p-4 text-sm font-semibold text-rose-700">
+        {data.error}
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 bg-slate-100 min-h-screen space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 ">
