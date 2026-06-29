@@ -298,7 +298,7 @@ export const AuthPage: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3.5 px-4 text-white font-semibold rounded-xl text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 flex justify-center items-center gap-2 ${
+            className={`w-full cursor-pointer py-3.5 px-4 text-white font-semibold rounded-xl text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 flex justify-center items-center gap-2 ${
               isLoading
                 ? "bg-indigo-400 cursor-not-allowed"
                 : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200"
@@ -323,7 +323,7 @@ export const AuthPage: React.FC = () => {
               onClick={() =>
                 handleModeSwitch(mode === "login" ? "signup" : "login")
               }
-              className="font-semibold text-indigo-600 focus:outline-none hover:underline cursor-pointer hover:text-indigo-700"
+              className="font-semibold  text-indigo-600 focus:outline-none hover:underline cursor-pointer hover:text-indigo-700"
             >
               {mode === "login" ? "Create an account" : "Sign in here"}
             </button>

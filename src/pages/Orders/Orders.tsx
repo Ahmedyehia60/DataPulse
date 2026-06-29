@@ -105,7 +105,12 @@ const Orders = () => {
           onPageSizeChange={setPageSize}
         />
 
-        <OrdersTable orders={paginatedOrders} />
+        <OrdersTable
+          orders={paginatedOrders}
+          totalOrders={filteredOrders.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+        />
 
         <Pagination
           currentPage={currentPage}

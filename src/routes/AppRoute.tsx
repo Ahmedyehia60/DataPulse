@@ -9,6 +9,7 @@ import { AuthPage } from "../pages/Login/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import { UploadFile } from "../components/UploadFile";
 import { OnboardingGate } from "../components/onboardingGate";
+import Bundles from "../pages/Bundles/Bundles";
 
 function AppRoute() {
   return (
@@ -22,6 +23,7 @@ function AppRoute() {
               <Route path="inventory" element={<Inventory />} />
               <Route path="orders" element={<Orders />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="bundles" element={<Bundles />} />
               <Route path="settings" element={<Settings />} />
             </Route>
           </Route>

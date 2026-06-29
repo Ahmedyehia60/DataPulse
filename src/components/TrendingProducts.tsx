@@ -3,18 +3,21 @@ const TrendingProducts = () => {
     { id: 1, name: "Smart Watch V1", category: "Electronics", trend: "+12%" },
     { id: 2, name: "Smart Watch V2", category: "Electronics", trend: "+12%" },
     { id: 3, name: "Smart Watch V3", category: "Electronics", trend: "+12%" },
+    { id: 3, name: "Smart Watch V3", category: "Electronics", trend: "+12%" },
+    { id: 3, name: "Smart Watch V3", category: "Electronics", trend: "+12%" },
+    { id: 3, name: "Smart Watch V3", category: "Electronics", trend: "+12%" },
   ];
 
   return (
-    <div className="p-4 bg-white rounded-xl shadow-sm max-w-md">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">
+    <div className="p-3 bg-white  max-w-md h-full">
+      <h2 className="text-lg font-bold text-gray-800 mb-6">
         Trending Products
       </h2>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-7">
         {products.map((item) => (
           <div key={item.id} className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-gray-200 rounded-lg shrink-0"></div>
               <div className="flex flex-col">
                 <p className="text-[15px] font-semibold text-gray-900 leading-none mb-1">

@@ -8,6 +8,9 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const [search, setSearch] = useState<boolean>(false);
   const bellRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const adminName = localStorage.getItem("user") ?? "";
+  const name = JSON.parse(adminName);
+  const user = name?.name || "Admin";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,7 +69,7 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 
         <div className="flex items-center gap-3 border-l pl-4 border-gray-200">
           <div className="text-right">
-            <p className="text-sm font-semibold leading-tight">RORO</p>
+            <p className="text-sm font-semibold leading-tight">{user}</p>
             <p className="text-xs text-gray-500">System Admin</p>
           </div>
           <img
