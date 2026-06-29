@@ -36,7 +36,7 @@ function Pagination({
           type="button"
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex h-9 items-center gap-1 rounded-lg border cursor-pointer border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <ArrowLeft size={14} />
           Previous
@@ -48,7 +48,7 @@ function Pagination({
               <button
                 type="button"
                 onClick={() => onPageChange(1)}
-                className="h-9 min-w-9 rounded-lg border border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100"
+                className="h-9 min-w-9 rounded-lg border cursor-pointer border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100"
               >
                 1
               </button>
@@ -61,7 +61,7 @@ function Pagination({
               key={page}
               type="button"
               onClick={() => onPageChange(page)}
-              className={`h-9 min-w-9 rounded-lg border px-3 text-xs font-bold transition ${
+              className={`h-9 min-w-9 rounded-lg border cursor-pointer px-3 text-xs font-bold transition ${
                 currentPage === page
                   ? "border-black bg-black text-white"
                   : "border-gray-200 bg-white text-gray-700 hover:bg-gray-100"
@@ -77,7 +77,7 @@ function Pagination({
               <button
                 type="button"
                 onClick={() => onPageChange(totalPages)}
-                className="h-9 min-w-9 rounded-lg border border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100"
+                className="h-9 min-w-9 rounded-lg border cursor-pointer border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100"
               >
                 {totalPages}
               </button>
@@ -93,7 +93,7 @@ function Pagination({
           type="button"
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex h-9 items-center gap-1 rounded-lg border cursor-pointer border-gray-200 bg-white px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Next
           <ArrowRight size={14} />

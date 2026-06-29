@@ -196,15 +196,7 @@ export const UploadFile: React.FC = () => {
                 ? "Continue to Orders"
                 : "Finish Onboarding"}
           </button>
-          {step === "orders" && !isLoading && (
-            <button
-              type="button"
-              onClick={handleSkipOrders}
-              className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all cursor-pointer"
-            >
-              I am a new store (No sales history yet)
-            </button>
-          )}
+      
         </div>
       </div>
     </div>

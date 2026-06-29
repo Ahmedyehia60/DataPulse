@@ -10,7 +10,7 @@ type OrdersTableProps = {
 };
 
 function OrdersTable({ orders }: OrdersTableProps) {
-  // الأعمدة ديناميكية
+
   const columns = [
     "id",
     "transaction_number",
@@ -22,7 +22,7 @@ function OrdersTable({ orders }: OrdersTableProps) {
     "status",
   ];
 
-  // دالة تحويل الأسماء للهيدر
+
   const formatColumnHeader = (key: string) => {
     return key
       .replace(/_/g, " ")

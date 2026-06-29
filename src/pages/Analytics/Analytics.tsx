@@ -5,24 +5,29 @@ import { LowStockSection } from "../../components/analytics/LowStockSection";
 import { SalesTrendChart } from "../../components/analytics/charts/SalesTrendChart";
 import { ForecastChart } from "../../components/analytics/charts/ForecastChart";
 import { TopProductsChart } from "../../components/analytics/charts/TopProductsChart";
+import { TrendingUpDown } from "lucide-react";
 
 function Analytics() {
   const data = useAnalyticsData();
 
   return (
     <div className="p-6 bg-slate-100 min-h-screen space-y-6">
-      {/* HEADER */}
-      <div>
-        <h1 className="text-2xl font-bold">📊 Business Overview</h1>
-        <p className="text-sm text-slate-500">
-          Sales performance, forecasting & inventory insights
-        </p>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 ">
+        <div className="mb-4 ">
+          <h1 className="text-2xl font-bold">📊 Business Overview</h1>
+          <p className="text-sm text-slate-500">
+            Sales performance, forecasting & inventory insights
+          </p>
+        </div>
+
+        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 bg-black px-4 py-2.5 text-white shadow-sm transition-all hover:bg-gray-900 active:scale-95">
+          <TrendingUpDown size={20} />
+          <span className="text-sm font-semibold">Show Live Analytics</span>
+        </button>
       </div>
 
-      {/* ALERT */}
       <Alerts isDropComing={data.isDropComing} />
 
-      {/* KPI SECTION */}
       <KPISection
         totalRevenue={data.totalRevenue}
         growthPercent={data.growthPercent}
@@ -31,17 +36,14 @@ function Analytics() {
         accuracy={data.accuracy}
       />
 
-      {/* CHARTS GRID */}
       <div className="grid lg:grid-cols-2 gap-6">
         <SalesTrendChart option={data.trendOption} />
 
         <ForecastChart option={data.forecastOption} />
       </div>
 
-      {/* TOP PRODUCTS CHART */}
       <TopProductsChart option={data.topProductsOption} />
 
-      {/* LOW STOCK */}
       <LowStockSection items={data.underStockItems} />
     </div>
   );
