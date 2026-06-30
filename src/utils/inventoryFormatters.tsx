@@ -64,7 +64,7 @@ export const renderCellValue = (
 
   if (normalizedColumn === "stock") {
     const stock = Number(value);
-    const isLowStock = !Number.isNaN(stock) && stock <= 20;
+    const isLowStock = !Number.isNaN(stock) && stock <= 10;
 
     return (
       <span
