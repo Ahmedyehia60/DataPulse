@@ -1,6 +1,5 @@
-import { Bell, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import PopUp from "../components/PopUp";
 import Alert from "../components/Alert";
 
 const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
@@ -24,7 +23,7 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
 
   return (
     <div className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3">
-      <div className="flex items-center">
+      <div className="flex items-center flex-1 p-4">
         <button
           onClick={toggleSidebar}
           className="md:hidden text-gray-600 mr-4"
@@ -36,7 +35,6 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
       </div>
 
       <div className="flex items-center gap-4 md:gap-6">
-
         <div className="flex items-center gap-3 border-l pl-4 border-gray-200">
           <div className="text-right">
             <p className="text-sm font-semibold leading-tight">{user}</p>

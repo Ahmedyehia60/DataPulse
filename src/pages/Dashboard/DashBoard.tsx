@@ -24,12 +24,6 @@ function DashBoard() {
 
   return (
     <div className="flex flex-col gap-6 p-3">
-      {data.stockAlert.criticalItemsCount > 0 && (
-        <div className="rounded-xl border border-amber-100 bg-amber-50 p-4 text-sm font-semibold text-amber-800">
-          {data.stockAlert.message}
-        </div>
-      )}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6  relative">
         {data.statBoxes.map((stat) => (
           <StatBox key={stat.title} stat={stat} />

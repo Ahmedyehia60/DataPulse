@@ -1,22 +1,29 @@
-import { CircleAlert } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDashboardData } from "../hooks/useDashboardData";
+import { CircleAlert } from "lucide-react";
 
 const Alert = () => {
-  return (
-    <div className="flex justify-between items-center p-4 bg-red-200/30 rounded-xl border-2 border-red-200 shadow-lg">
-      <div className="flex gap-3 items-center">
-        <CircleAlert className="w-5 h-5 text-red-900" />
-        <p className="text-sm font-bold text-red-900">
-          Critical Stock Alert: 5 items below safety stock levels
-        </p>
-      </div>
+  const { data } = useDashboardData();
+  if (!data) return null;
 
-      <Link
-        to="/"
-        className="text-sm font-bold text-red-900 hover:text-red-800"
-      >
-        View Items
-      </Link>
+  return (
+    <div className=" w-[70%] ">
+      {data.stockAlert.criticalItemsCount > 0 && (
+        <div className="rounded-xl w-full border border-red-200 bg-red-100 p-4 gap-5 text-sm font-semibold text-red-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {" "}
+            <CircleAlert className="w-5 h-5 text-red-900" />
+            {data.stockAlert.message}{" "}
+          </div>
+
+          <Link
+            to="/inventory?filter=low-stock"
+            className="text-sm font-bold text-red-900 hover:text-red-800"
+          >
+            View Items
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

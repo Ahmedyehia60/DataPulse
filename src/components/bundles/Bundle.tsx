@@ -1,32 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Package, ShoppingBag, Edit2, Check, X } from "lucide-react";
-
-const sampleBundles = [
-  {
-    id: "b1",
-    name: "Summer Skincare Essential Pack",
-    productsCount: 5,
-    productsList: [
-      "Hydrating Facial Cleanser",
-      "Vitamin C Serum",
-      "Zinc Olive Protection Cream",
-      "Zinc Olive Protection Cream",
-      "Zinc Olive Protection Cream",
-    ],
-  },
-  {
-    id: "b2",
-    name: "Hair Revitalize Combo",
-    productsCount: 2,
-    productsList: ["Premium Hair Serum", "Scalp Massager Brush"],
-  },
-];
-
+type BundleItem = {
+  id: string;
+  name: string;
+  productsCount: number;
+  productsList: string[];
+  confidence?: number;
+  lift?: number;
+  support?: number;
+  coOccurrenceCount?: number;
+};
 function Bundle() {
-  const [bundles, setBundles] = useState(sampleBundles);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [bundles, setBundles] = useState<BundleItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch("http://localhost:5000/api/bundles", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load bundles");
+        return res.json();
+      })
+      .then((data) => setBundles(data.bundles || []))
+      .catch((err) => {
+        console.error("Bundles API Error:", err);
+        setBundles([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
+  if (loading) {
+    return <div className="p-6 text-sm text-gray-500">Loading bundles...</div>;
+  }
   const handleStartEdit = (id: string, currentName: string) => {
     setEditingId(id);
     setEditName(currentName);
