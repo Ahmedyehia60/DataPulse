@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import type { InventoryRow } from "../../utils/types";
 import InventoryTable from "../../components/Inventory/InventoryTable";
 import Toolbar from "../../components/Toolbar";
 import Pagination from "../../components/Pagination";
+
+const MIN_DAILY_DEMAND_FOR_CRITICAL = 1;
 
 function Inventory() {
   const [rows, setRows] = useState<InventoryRow[]>([]);
@@ -12,6 +15,10 @@ function Inventory() {
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [searchParams] = useSearchParams();
+
+  const stockFilter = searchParams.get("filter");
+  const isLowStockFilter = stockFilter === "low-stock";
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -43,16 +50,29 @@ function Inventory() {
 
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
-    if (!query) return rows;
 
-    return rows.filter((row) =>
-      columns.some((column) =>
-        String(row[column] ?? "")
-          .toLowerCase()
-          .includes(query),
-      ),
-    );
-  }, [columns, rows, search]);
+    return rows.filter((row) => {
+      const stock = Number(row.stock ?? row.current ?? 0);
+      const min = Number(row.min ?? row.min_stock ?? 10);
+      const avgDailyDemand = Number(
+        row.avgDailyDemand ?? row.avg_daily_demand ?? 0,
+      );
+
+      const matchesLowStock =
+        !isLowStockFilter ||
+        (stock < min && avgDailyDemand >= MIN_DAILY_DEMAND_FOR_CRITICAL);
+
+      const matchesSearch =
+        !query ||
+        columns.some((column) =>
+          String(row[column] ?? "")
+            .toLowerCase()
+            .includes(query),
+        );
+
+      return matchesLowStock && matchesSearch;
+    });
+  }, [columns, isLowStockFilter, rows, search]);
 
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
   const pageStartIndex = (currentPage - 1) * pageSize;
@@ -63,7 +83,7 @@ function Inventory() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, pageSize]);
+  }, [isLowStockFilter, search, pageSize]);
 
   useEffect(() => {
     setCurrentPage((page) => Math.min(page, totalPages));
@@ -91,7 +111,9 @@ function Inventory() {
         <div>
           <h1 className="text-2xl font-bold text-gray-950">Inventory</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Showing the inventory data uploaded during onboarding.
+            {isLowStockFilter
+              ? "Showing critical low stock items with active demand."
+              : "Showing the inventory data uploaded during onboarding."}
           </p>
         </div>
 
@@ -100,6 +122,12 @@ function Inventory() {
           <span className="text-sm font-semibold">New Item</span>
         </button>
       </div>
+
+      {isLowStockFilter && (
+        <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+          Critical low stock filter active: {filteredRows.length} items found.
+        </div>
+      )}
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
         <Toolbar
@@ -124,7 +152,7 @@ function Inventory() {
           visibleEnd={visibleEnd}
           filteredCount={filteredRows.length}
           totalCount={rows.length}
-          hasSearch={search.trim().length > 0}
+          hasSearch={search.trim().length > 0 || isLowStockFilter}
           onPageChange={setCurrentPage}
         />
       </div>

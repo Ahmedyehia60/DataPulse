@@ -60,7 +60,10 @@ function Analytics() {
 
       <TopProductsChart option={data.topProductsOption} />
 
-      <LowStockSection items={data.underStockItems} />
+      <LowStockSection
+        items={data.underStockItems}
+        totalCount={data.underStockTotalCount}
+      />
     </div>
   );
 }

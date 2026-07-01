@@ -85,6 +85,9 @@ function Pagination({
           )}
         </div>
 
+
+
+
         <span className="text-xs font-semibold text-gray-500 sm:hidden">
           Page {currentPage} of {totalPages}
         </span>

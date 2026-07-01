@@ -38,6 +38,7 @@ type AnalyticsApiResponse = {
     products: TopProduct[];
   };
   lowStock: {
+    totalCount?: number;
     items: LowStockItem[];
   };
 };
@@ -80,6 +81,8 @@ export const useAnalyticsData = () => {
     apiData?.topProductsChart.products.map((p) => p.salesVolume) ?? [];
 
   const underStockItems = apiData?.lowStock.items ?? [];
+  const underStockTotalCount =
+    apiData?.lowStock.totalCount ?? underStockItems.length;
 
   const forecastOption = {
     tooltip: { trigger: "axis" },
@@ -147,6 +150,7 @@ export const useAnalyticsData = () => {
     isDropComing: apiData?.alerts.isDropComing ?? false,
     forecastOption,
     topProductsOption,
+    underStockTotalCount,
     underStockItems,
     trendOption,
     isLoading,
