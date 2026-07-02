@@ -1,4 +1,5 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import type { InventoryRow } from "./types";
 
 export const formatColumnName = (column: string) =>
   column
@@ -20,6 +21,7 @@ const demandClassName = (value: string) => {
 export const renderCellValue = (
   column: string,
   value: string | number | boolean | null,
+  row?: InventoryRow,
 ) => {
   const cellValue = String(value ?? "");
   const normalizedColumn = column.toLowerCase();
@@ -64,12 +66,22 @@ export const renderCellValue = (
 
   if (normalizedColumn === "stock") {
     const stock = Number(value);
-    const isLowStock = !Number.isNaN(stock) && stock <= 10;
+    const min = Number(row?.minStock ?? row?.min ?? row?.min_stock ?? 10);
+    const avgDailyDemand = Number(
+      row?.avgDailyDemand ?? row?.avg_daily_demand ?? 0,
+    );
+
+    const isCriticalStock =
+      !Number.isNaN(stock) &&
+      !Number.isNaN(min) &&
+      !Number.isNaN(avgDailyDemand) &&
+      stock < min &&
+      avgDailyDemand >= 1;
 
     return (
       <span
         className={
-          isLowStock
+          isCriticalStock
             ? "inline-flex rounded-md bg-red-50 px-2.5 py-1 font-bold text-red-700 ring-1 ring-red-100"
             : "font-semibold text-gray-900"
         }
@@ -78,6 +90,5 @@ export const renderCellValue = (
       </span>
     );
   }
-
   return cellValue;
 };

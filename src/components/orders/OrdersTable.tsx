@@ -7,9 +7,9 @@ import type { OrderItem } from "../../utils/types";
 
 type OrdersTableProps = {
   orders: OrderItem[];
-  totalOrders: number; // الإجمالي الكلي للأوردرات
-  currentPage: number; // الصفحة الحالية
-  pageSize: number; // حجم الصفحة
+  totalOrders: number;
+  currentPage: number;
+  pageSize: number;
 };
 
 function OrdersTable({
@@ -78,7 +78,6 @@ function OrdersTable({
                       {(() => {
                         switch (column) {
                           case "id":
-                            // المعادلة الجديدة لحساب الرقم العكسي الثابت عبر الصفحات
                             const reverseId =
                               totalOrders -
                               (currentPage - 1) * pageSize -

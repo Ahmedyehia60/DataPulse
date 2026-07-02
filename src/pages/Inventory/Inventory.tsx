@@ -48,19 +48,33 @@ function Inventory() {
     return Object.keys(rows[0]);
   }, [rows]);
 
+  const latestStockMonth = useMemo(() => {
+    const months = rows
+      .map((row) => String(row.stockMonth ?? row.month ?? ""))
+      .filter(Boolean)
+      .sort();
+
+    return months.at(-1) ?? "";
+  }, [rows]);
+
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return rows.filter((row) => {
+      const rowMonth = String(row.stockMonth ?? row.month ?? "");
+      const isLatestMonth = !latestStockMonth || rowMonth === latestStockMonth;
+
       const stock = Number(row.stock ?? row.current ?? 0);
-      const min = Number(row.min ?? row.min_stock ?? 10);
+      const min = Number(row.minStock ?? row.min ?? row.min_stock ?? 10);
       const avgDailyDemand = Number(
         row.avgDailyDemand ?? row.avg_daily_demand ?? 0,
       );
 
       const matchesLowStock =
         !isLowStockFilter ||
-        (stock < min && avgDailyDemand >= MIN_DAILY_DEMAND_FOR_CRITICAL);
+        (isLatestMonth &&
+          stock < min &&
+          avgDailyDemand >= MIN_DAILY_DEMAND_FOR_CRITICAL);
 
       const matchesSearch =
         !query ||
@@ -72,7 +86,7 @@ function Inventory() {
 
       return matchesLowStock && matchesSearch;
     });
-  }, [columns, isLowStockFilter, rows, search]);
+  }, [columns, isLowStockFilter, latestStockMonth, rows, search]);
 
   const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
   const pageStartIndex = (currentPage - 1) * pageSize;

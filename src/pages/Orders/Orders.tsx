@@ -5,6 +5,7 @@ import OrdersTable from "../../components/orders/OrdersTable";
 import OrderStatusFilters from "../../components/orders/OrderStatusFilters";
 import Toolbar from "../../components/Toolbar";
 import Pagination from "../../components/Pagination";
+import { downloadCSV } from "../../utils/downloadCSV";
 
 const Orders = () => {
   const [orders, setOrders] = useState<OrderItem[]>([]);
@@ -64,7 +65,17 @@ const Orders = () => {
   useEffect(() => {
     setCurrentPage((page) => Math.min(page, totalPages));
   }, [totalPages]);
-
+  const handleExport = () => {
+    downloadCSV({
+      data: filteredOrders,
+      filename: "orders_report",
+      columns: [
+        { header: "Transaction Number", key: "transaction_number" },
+        { header: "Product Name", key: "item_name" },
+        { header: "Current Status", key: "status" },
+      ],
+    });
+  };
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center font-semibold text-gray-500">
@@ -83,7 +94,10 @@ const Orders = () => {
           </p>
         </div>
 
-        <button className="group flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95">
+        <button
+          className="group flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-gray-700 shadow-sm transition-all hover:bg-gray-50 active:scale-95"
+          onClick={handleExport}
+        >
           <Download
             size={20}
             className="text-gray-500 group-hover:text-blue-600"

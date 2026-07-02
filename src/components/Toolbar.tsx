@@ -22,7 +22,6 @@ function Toolbar({
           type="text"
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search inventory..."
           className="ml-2 w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
         />
       </div>

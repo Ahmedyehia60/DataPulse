@@ -2,6 +2,7 @@ import StatBox from "../../components/StatBox";
 import AreaChart from "../../components/DashboardCharts/AreaChart";
 import TrendingProducts from "../../components/TrendingProducts";
 import { useDashboardData } from "../../hooks/useDashboardData";
+import SmartReorderPlan from "../../components/SmartReorderPlan";
 
 function DashBoard() {
   const { data, error, isLoading } = useDashboardData();
@@ -29,6 +30,7 @@ function DashBoard() {
           <StatBox key={stat.title} stat={stat} />
         ))}
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1">
         <div className="md:col-span-2">
           <AreaChart chart={data.demandSupplyTrendChart} />
@@ -38,6 +40,7 @@ function DashBoard() {
           <TrendingProducts products={data.topTrendingStockChart.products} />
         </div>
       </div>
+      <SmartReorderPlan />
     </div>
   );
 }

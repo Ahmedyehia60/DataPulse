@@ -58,7 +58,7 @@ function InventoryTable({
                 >
                   {column.toLowerCase().trim() === "id"
                     ? pageStartIndex + rowIndex + 1
-                    : renderCellValue(column, row[column])}
+                    : renderCellValue(column, row[column], row)}
                 </td>
               ))}
             </tr>
