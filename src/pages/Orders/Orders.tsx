@@ -15,6 +15,8 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -84,6 +86,9 @@ const Orders = () => {
     );
   }
 
+
+
+
   return (
     <div>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -124,6 +129,8 @@ const Orders = () => {
           totalOrders={filteredOrders.length}
           currentPage={currentPage}
           pageSize={pageSize}
+          setOrders={setOrders}
+       
         />
 
         <Pagination

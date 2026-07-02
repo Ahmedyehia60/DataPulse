@@ -1,3 +1,4 @@
+import { Pen, Trash2 } from "lucide-react";
 import {
   formatCurrency,
   formatOrderDate,
@@ -10,6 +11,7 @@ type OrdersTableProps = {
   totalOrders: number;
   currentPage: number;
   pageSize: number;
+  setOrders: React.Dispatch<React.SetStateAction<OrderItem[]>>;
 };
 
 function OrdersTable({
@@ -17,6 +19,7 @@ function OrdersTable({
   totalOrders,
   currentPage,
   pageSize,
+  setOrders
 }: OrdersTableProps) {
   const columns = [
     "id",
@@ -27,6 +30,7 @@ function OrdersTable({
     "price",
     "total_price",
     "status",
+    "actions",
   ];
 
   const formatColumnHeader = (key: string) => {
@@ -35,7 +39,18 @@ function OrdersTable({
       .replace(/\b\w/g, (char) => char.toUpperCase())
       .replace("Transaction Number", "Transaction No")
       .replace("Item Name", "Product Name")
-      .replace("Total Price", "Total Cost");
+      .replace("Total Price", "Total Cost")
+      .replace("Actions", "Actions");
+  };
+
+  const handleDeleteOrder = (orderId: number ,e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    orders = orders.filter((order) => order.id !== orderId);
+    setOrders(orders);
+  };
+
+  const handleEditOrder = (orderId: number) => {
+    console.log(`Edit order with ID: ${orderId}`);
   };
 
   return (
@@ -68,7 +83,10 @@ function OrdersTable({
                 className="transition hover:bg-indigo-50/30 bg-white"
               >
                 {columns.map((column) => {
-                  const cellValue = order[column as keyof OrderItem];
+                  const isDataColumn = column !== "actions";
+                  const cellValue = isDataColumn
+                    ? order[column as keyof OrderItem]
+                    : null;
 
                   return (
                     <td
@@ -90,7 +108,7 @@ function OrdersTable({
                           case "transaction_number":
                             return (
                               <span className="font-semibold text-gray-900">
-                                {cellValue}
+                                {cellValue as React.ReactNode}
                               </span>
                             );
                           case "transaction_date":
@@ -98,11 +116,11 @@ function OrdersTable({
                           case "item_name":
                             return (
                               <span className="wrap-break-word font-medium text-gray-900 max-w-60 block truncate">
-                                {cellValue}
+                                {cellValue as React.ReactNode}
                               </span>
                             );
                           case "quantity":
-                            return cellValue;
+                            return cellValue as React.ReactNode;
                           case "price":
                             return formatCurrency(cellValue as number);
                           case "total_price":
@@ -118,9 +136,39 @@ function OrdersTable({
                                   cellValue as string,
                                 )}`}
                               >
-                                {cellValue}
+                                {cellValue as React.ReactNode}
                               </span>
                             );
+
+                          case "actions":
+                            return (
+                              <div className="flex items-center gap-4">
+                               
+                                <button
+                                  onClick={() => handleEditOrder(order.id)}
+                                  className="group p-1 text-blue-600 hover:text-blue-800 transition-colors duration-200 cursor-pointer"
+                                  title="Edit Order"
+                                >
+                                  <Pen
+                                    size={16}
+                                    className="inline-block transition-transform duration-200 ease-out group-hover:scale-115 group-hover:-translate-y-0.5"
+                                  />
+                                </button>
+
+                                
+                                <button
+                                  onClick={(e) => handleDeleteOrder(order.id, e)}
+                                  className="group p-1 text-red-500 hover:text-red-700 transition-colors duration-200 cursor-pointer"
+                                  title="Delete Order"
+                                >
+                                  <Trash2
+                                    size={16}
+                                    className="inline-block transition-transform duration-200 ease-out group-hover:scale-115 group-hover:rotate-6"
+                                  />
+                                </button>
+                              </div>
+                            );
+
                           default:
                             return String(cellValue);
                         }
