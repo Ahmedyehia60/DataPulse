@@ -22,8 +22,8 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   }, []);
 
   return (
-    <div className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6 py-3">
-      <div className="flex items-center flex-1 p-4">
+    <div className="min-h-20 bg-white border-b border-gray-200 flex items-center justify-between gap-2 px-3 md:px-6 py-3">
+      <div className="flex items-center flex-1 min-w-0 p-0 md:p-4">
         <button
           onClick={toggleSidebar}
           className="md:hidden text-gray-600 mr-4"

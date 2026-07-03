@@ -21,7 +21,7 @@ function SmartReorderPlan() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://192.168.1.2:5000/api/reorder-plan", {
+    fetch(`${import.meta.env.VITE_API}/api/reorder-plan`, {
       credentials: "include",
     })
       .then((res) => res.json())

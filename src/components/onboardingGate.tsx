@@ -8,9 +8,12 @@ export const OnboardingGate = () => {
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       try {
-        const response = await fetch("http://192.168.1.2:5000/api/inventory", {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API}/api/inventory`,
+          {
+            credentials: "include",
+          },
+        );
 
         if (response.ok) {
           const result = await response.json();
@@ -21,7 +24,7 @@ export const OnboardingGate = () => {
             return;
           }
           const ordersResponse = await fetch(
-            "http://192.168.1.2:5000/api/orders",
+            `${import.meta.env.VITE_API}/api/orders`,
             {
               credentials: "include",
             },

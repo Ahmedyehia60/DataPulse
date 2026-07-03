@@ -10,12 +10,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import { UploadFile } from "../components/UploadFile";
 import { OnboardingGate } from "../components/onboardingGate";
 import Bundles from "../pages/Bundles/Bundles";
+import Scanner from "../pages/scanner/Scanner";
 
 function AppRoute() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<ProtectedRoute />}>
+          <Route path="scanner" element={<Scanner />} />
           <Route path="upload" element={<UploadFile />} />
           <Route element={<OnboardingGate />}>
             <Route path="/" element={<Wrapper />}>

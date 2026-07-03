@@ -80,7 +80,7 @@ export const UploadFile: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://192.168.1.2:5000/api/upload?type=${step}`,
+        `${import.meta.env.VITE_API}/api/upload?type=${step}`,
         {
           method: "POST",
           credentials: "include",
