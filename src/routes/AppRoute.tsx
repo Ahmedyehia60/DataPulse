@@ -10,7 +10,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { UploadFile } from "../components/UploadFile";
 import { OnboardingGate } from "../components/onboardingGate";
 import Bundles from "../pages/Bundles/Bundles";
-import Scanner from "../components/Scanner";
+import Scanner from "../pages/scanner/Scanner";
 
 function AppRoute() {
   return (
