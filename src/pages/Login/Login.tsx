@@ -40,7 +40,7 @@ export const AuthPage: React.FC = () => {
 
     try {
       if (mode === "login") {
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+        const response = await fetch("http://192.168.1.2:5000/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -64,16 +64,19 @@ export const AuthPage: React.FC = () => {
           });
         }
       } else {
-        const response = await fetch("http://localhost:5000/api/auth/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            name: data.name,
-            email: data.email,
-            password: data.password,
-          }),
-        });
+        const response = await fetch(
+          "http://192.168.1.2:5000/api/auth/signup",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              name: data.name,
+              email: data.email,
+              password: data.password,
+            }),
+          },
+        );
 
         if (response.ok) {
           setServerMessage({

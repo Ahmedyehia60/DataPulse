@@ -15,12 +15,10 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  
-
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/orders", {
+        const response = await fetch("http://192.168.1.2:5000/api/orders", {
           credentials: "include",
         });
 
@@ -86,9 +84,6 @@ const Orders = () => {
     );
   }
 
-
-
-
   return (
     <div>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -130,7 +125,6 @@ const Orders = () => {
           currentPage={currentPage}
           pageSize={pageSize}
           setOrders={setOrders}
-       
         />
 
         <Pagination

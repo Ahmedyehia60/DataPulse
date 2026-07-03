@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const ANALYTICS_API_URL = "http://localhost:5000/api/analytics";
+const ANALYTICS_API_URL = "http://192.168.1.2:5000/api/analytics";
 
 type LowStockItem = {
   name: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const DASHBOARD_API_URL = "http://localhost:5000/api/dashboard";
+const DASHBOARD_API_URL = "http://192.168.1.2:5000/api/dashboard";
 
 export type DashboardStatBox = {
   title: string;

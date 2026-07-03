@@ -21,7 +21,7 @@ function SmartReorderPlan() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/reorder-plan", {
+    fetch("http://192.168.1.2:5000/api/reorder-plan", {
       credentials: "include",
     })
       .then((res) => res.json())

@@ -16,7 +16,7 @@ function Bundle() {
   const [bundles, setBundles] = useState<BundleItem[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:5000/api/bundles", {
+    fetch("http://192.168.1.2:5000/api/bundles", {
       credentials: "include",
     })
       .then((res) => {

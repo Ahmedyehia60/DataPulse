@@ -23,7 +23,7 @@ function Inventory() {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/inventory", {
+        const response = await fetch("http://192.168.1.2:5000/api/inventory", {
           credentials: "include",
         });
 

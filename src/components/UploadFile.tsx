@@ -31,9 +31,8 @@ export const UploadFile: React.FC = () => {
           } else if (prev >= 60 && prev < 85) {
             nextProgress = prev + Math.floor(Math.random() * 3) + 1;
           } else if (prev >= 85 && prev < 95) {
-            nextProgress = prev + 1; 
+            nextProgress = prev + 1;
           } else {
-          
             const slowDownFactor = Math.random() > 0.93;
             nextProgress = slowDownFactor ? prev + 1 : prev;
           }
@@ -81,7 +80,7 @@ export const UploadFile: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/upload?type=${step}`,
+        `http://192.168.1.2:5000/api/upload?type=${step}`,
         {
           method: "POST",
           credentials: "include",
