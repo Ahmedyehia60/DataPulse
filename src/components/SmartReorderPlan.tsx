@@ -21,7 +21,7 @@ function SmartReorderPlan() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/reorder-plan", {
+    fetch(`${import.meta.env.VITE_API}/api/reorder-plan`, {
       credentials: "include",
     })
       .then((res) => res.json())

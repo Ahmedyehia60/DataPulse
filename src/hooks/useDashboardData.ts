@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const DASHBOARD_API_URL = "http://localhost:5000/api/dashboard";
+const DASHBOARD_API_URL = `${import.meta.env.VITE_API}/api/dashboard`;
 
 export type DashboardStatBox = {
   title: string;
