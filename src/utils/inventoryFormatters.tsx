@@ -1,5 +1,4 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
-import type { InventoryRow } from "./types";
 
 export const formatColumnName = (column: string) =>
   column
@@ -10,9 +9,7 @@ const demandClassName = (value: string) => {
   const normalized = value.trim().toLowerCase();
 
   if (normalized === "critical") return "bg-red-100 text-red-700 ring-red-200";
-  if (normalized === "high")
-    return "bg-orange-100 text-orange-700 ring-orange-200";
-  if (normalized === "normal")
+  if (normalized === "low")
     return "bg-emerald-100 text-emerald-700 ring-emerald-200";
 
   return "bg-gray-100 text-gray-700 ring-gray-200";
@@ -21,7 +18,6 @@ const demandClassName = (value: string) => {
 export const renderCellValue = (
   column: string,
   value: string | number | boolean | null,
-  row?: InventoryRow,
 ) => {
   const cellValue = String(value ?? "");
   const normalizedColumn = column.toLowerCase();
@@ -38,7 +34,7 @@ export const renderCellValue = (
   }
 
   if (normalizedColumn === "trend") {
-    if (normalizedValue === "up") {
+    if (normalizedValue === "high") {
       return (
         <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-600">
           <ArrowUpRight size={16} />
@@ -47,7 +43,7 @@ export const renderCellValue = (
       );
     }
 
-    if (normalizedValue === "down") {
+    if (normalizedValue === "low") {
       return (
         <span className="inline-flex items-center gap-1.5 font-semibold text-rose-600">
           <ArrowDownRight size={16} />
@@ -59,29 +55,19 @@ export const renderCellValue = (
     return (
       <span className="inline-flex items-center gap-1.5 font-semibold text-gray-500">
         <span className="h-px w-3 bg-gray-400" />
-        Stable
+        Flat
       </span>
     );
   }
 
   if (normalizedColumn === "stock") {
     const stock = Number(value);
-    const min = Number(row?.minStock ?? row?.min ?? row?.min_stock ?? 10);
-    const avgDailyDemand = Number(
-      row?.avgDailyDemand ?? row?.avg_daily_demand ?? 0,
-    );
-
-    const isCriticalStock =
-      !Number.isNaN(stock) &&
-      !Number.isNaN(min) &&
-      !Number.isNaN(avgDailyDemand) &&
-      stock < min &&
-      avgDailyDemand >= 1;
+    const isLowStock = !Number.isNaN(stock) && stock <= 20;
 
     return (
       <span
         className={
-          isCriticalStock
+          isLowStock
             ? "inline-flex rounded-md bg-red-50 px-2.5 py-1 font-bold text-red-700 ring-1 ring-red-100"
             : "font-semibold text-gray-900"
         }
@@ -90,5 +76,6 @@ export const renderCellValue = (
       </span>
     );
   }
+
   return cellValue;
 };
