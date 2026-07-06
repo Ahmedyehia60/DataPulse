@@ -4,14 +4,22 @@ import {
   formatOrderDate,
   statusClassName,
 } from "../../utils/pagination";
-import type { OrderItem } from "../../utils/types";
+import type { OrderItem, OrderStatus } from "../../utils/types";
+
+export type OrderUpdatePayload = {
+  transactionDate: string;
+  quantity: number;
+  price: number;
+  status: OrderStatus;
+};
 
 type OrdersTableProps = {
   orders: OrderItem[];
   totalOrders: number;
   currentPage: number;
   pageSize: number;
-  setOrders: React.Dispatch<React.SetStateAction<OrderItem[]>>;
+  onEditOrder: (order: OrderItem) => void;
+  onDeleteOrder: (order: OrderItem) => void;
 };
 
 function OrdersTable({
@@ -19,7 +27,8 @@ function OrdersTable({
   totalOrders,
   currentPage,
   pageSize,
-  setOrders
+  onEditOrder,
+  onDeleteOrder,
 }: OrdersTableProps) {
   const columns = [
     "id",
@@ -41,16 +50,6 @@ function OrdersTable({
       .replace("Item Name", "Product Name")
       .replace("Total Price", "Total Cost")
       .replace("Actions", "Actions");
-  };
-
-  const handleDeleteOrder = (orderId: number ,e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    orders = orders.filter((order) => order.id !== orderId);
-    setOrders(orders);
-  };
-
-  const handleEditOrder = (orderId: number) => {
-    console.log(`Edit order with ID: ${orderId}`);
   };
 
   return (
@@ -145,7 +144,7 @@ function OrdersTable({
                               <div className="flex items-center gap-4">
                                
                                 <button
-                                  onClick={() => handleEditOrder(order.id)}
+                                  onClick={() => onEditOrder(order)}
                                   className="group p-1 text-blue-600 hover:text-blue-800 transition-colors duration-200 cursor-pointer"
                                   title="Edit Order"
                                 >
@@ -157,7 +156,7 @@ function OrdersTable({
 
                                 
                                 <button
-                                  onClick={(e) => handleDeleteOrder(order.id, e)}
+                                  onClick={() => onDeleteOrder(order)}
                                   className="group p-1 text-red-500 hover:text-red-700 transition-colors duration-200 cursor-pointer"
                                   title="Delete Order"
                                 >

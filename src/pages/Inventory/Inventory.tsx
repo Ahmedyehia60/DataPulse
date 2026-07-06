@@ -1,12 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
+import type { FormEvent } from "react";
 import { Plus } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import type { InventoryRow } from "../../utils/types";
 import InventoryTable from "../../components/Inventory/InventoryTable";
+import type { InventoryUpdatePayload } from "../../components/Inventory/InventoryTable";
 import Toolbar from "../../components/Toolbar";
 import Pagination from "../../components/Pagination";
 
 const MIN_DAILY_DEMAND_FOR_CRITICAL = 1;
+
+type InventoryFormState = {
+  productName: string;
+  stock: string;
+  price: string;
+  minStock: string;
+  orderAtLeast: string;
+  avgDailyDemand: string;
+  demand: string;
+  trend: string;
+};
 
 function Inventory() {
   const [rows, setRows] = useState<InventoryRow[]>([]);
@@ -16,6 +29,20 @@ function Inventory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams] = useSearchParams();
+  const [editingRow, setEditingRow] = useState<InventoryRow | null>(null);
+  const [deletingRow, setDeletingRow] = useState<InventoryRow | null>(null);
+  const [inventoryForm, setInventoryForm] = useState<InventoryFormState>({
+    productName: "",
+    stock: "0",
+    price: "0",
+    minStock: "",
+    orderAtLeast: "",
+    avgDailyDemand: "",
+    demand: "",
+    trend: "",
+  });
+  const [modalError, setModalError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const stockFilter = searchParams.get("filter");
   const isLowStockFilter = stockFilter === "low-stock";
@@ -106,6 +133,123 @@ function Inventory() {
     setCurrentPage((page) => Math.min(page, totalPages));
   }, [totalPages]);
 
+  const handleOpenEditRow = (row: InventoryRow) => {
+    setEditingRow(row);
+    setModalError("");
+    setInventoryForm({
+      productName: String(row.productName ?? ""),
+      stock: String(row.stock ?? 0),
+      price: String(row.price ?? 0),
+      minStock: String(row.minStock ?? row.min ?? ""),
+      orderAtLeast: String(row.orderAtLeast ?? ""),
+      avgDailyDemand: String(row.avgDailyDemand ?? ""),
+      demand: String(row.demand ?? ""),
+      trend: String(row.trend ?? ""),
+    });
+  };
+
+  const parseOptionalNumber = (value: string) => {
+    if (value.trim() === "") return null;
+    return Number(value);
+  };
+
+  const handleUpdateRow = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!editingRow) return;
+
+    const payload: InventoryUpdatePayload = {
+      productName: inventoryForm.productName.trim(),
+      stock: Number(inventoryForm.stock),
+      price: Number(inventoryForm.price),
+      minStock: parseOptionalNumber(inventoryForm.minStock),
+      orderAtLeast: parseOptionalNumber(inventoryForm.orderAtLeast),
+      avgDailyDemand: parseOptionalNumber(inventoryForm.avgDailyDemand),
+      demand: inventoryForm.demand.trim(),
+      trend: inventoryForm.trend.trim(),
+    };
+
+    if (
+      !payload.productName ||
+      !Number.isFinite(payload.stock) ||
+      payload.stock < 0 ||
+      !Number.isFinite(payload.price) ||
+      payload.price < 0 ||
+      Number.isNaN(payload.minStock) ||
+      Number.isNaN(payload.orderAtLeast) ||
+      Number.isNaN(payload.avgDailyDemand)
+    ) {
+      setModalError("Enter valid inventory values.");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setModalError("");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/api/inventory/${editingRow.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setModalError(result.message || "Could not update inventory item.");
+        return;
+      }
+
+      setRows((currentRows) =>
+        currentRows.map((currentRow) =>
+          currentRow.id === editingRow.id ? result : currentRow,
+        ),
+      );
+      setEditingRow(null);
+    } catch {
+      setModalError("Server error while updating inventory item.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteRow = async () => {
+    if (!deletingRow) return;
+
+    try {
+      setIsSaving(true);
+      setModalError("");
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API}/api/inventory/${deletingRow.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setModalError(result.message || "Could not delete inventory item.");
+        return;
+      }
+
+      setRows((currentRows) =>
+        currentRows.filter((currentRow) => currentRow.id !== deletingRow.id),
+      );
+      setDeletingRow(null);
+    } catch {
+      setModalError("Server error while deleting inventory item.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center text-sm font-semibold text-gray-500">
@@ -159,6 +303,11 @@ function Inventory() {
             columns={columns}
             rows={paginatedRows}
             pageStartIndex={pageStartIndex}
+            onEditRow={handleOpenEditRow}
+            onDeleteRow={(row) => {
+              setDeletingRow(row);
+              setModalError("");
+            }}
           />
         </div>
 
@@ -173,6 +322,134 @@ function Inventory() {
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {editingRow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/40 p-4">
+          <form
+            onSubmit={handleUpdateRow}
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl"
+          >
+            <div className="border-b border-gray-100 px-6 py-5">
+              <h2 className="text-lg font-black text-gray-950">
+                Edit Inventory Item
+              </h2>
+              <p className="mt-1 text-sm text-gray-500">
+                Update product stock and planning values used by analytics.
+              </p>
+            </div>
+
+            <div className="grid gap-4 p-6 md:grid-cols-2">
+              {[
+                ["productName", "Product name", "text"],
+                ["stock", "Stock", "number"],
+                ["price", "Price", "number"],
+                ["minStock", "Minimum stock", "number"],
+                ["orderAtLeast", "Order at least", "number"],
+                ["avgDailyDemand", "Average daily demand", "number"],
+                ["demand", "Demand", "text"],
+                ["trend", "Trend", "text"],
+              ].map(([key, label, type]) => {
+                // Check if the current field should be read-only
+                const isReadOnly = [
+                  "Average daily demand",
+                  "Trend",
+                  "Demand",
+                  "Minimum stock",
+                  "Order at least",
+                ].includes(label);
+
+                return (
+                  <label
+                    key={key}
+                    className="flex flex-col gap-1.5 text-sm font-semibold text-gray-700"
+                  >
+                    {label}
+                    <input
+                      type={type}
+                      min={type === "number" ? "0" : undefined}
+                      step={type === "number" ? "0.01" : undefined}
+                      value={inventoryForm[key as keyof InventoryFormState]}
+                      onChange={(event) =>
+                        setInventoryForm((form) => ({
+                          ...form,
+                          [key]: event.target.value,
+                        }))
+                      }
+                      
+                      readOnly={isReadOnly}
+                      className={`rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 ${
+                        isReadOnly
+                          ? "bg-gray-50 text-gray-500 cursor-not-allowed"
+                          : ""
+                      }`}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+            {modalError && (
+              <div className="mx-6 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+                {modalError}
+              </div>
+            )}
+
+            <div className="flex justify-end gap-3 border-t border-gray-100 px-6 py-4">
+              <button
+                type="button"
+                onClick={() => setEditingRow(null)}
+                className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="rounded-xl bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:bg-gray-300"
+              >
+                {isSaving ? "Saving..." : "Save changes"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {deletingRow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/40 p-4">
+          <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl">
+            <h2 className="text-lg font-black text-gray-950">
+              Delete Inventory Item
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-gray-600">
+              Delete {String(deletingRow.productName ?? "this item")}? This
+              removes it from inventory views and analytics input.
+            </p>
+
+            {modalError && (
+              <div className="mt-4 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+                {modalError}
+              </div>
+            )}
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setDeletingRow(null)}
+                className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isSaving}
+                onClick={handleDeleteRow}
+                className="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white disabled:bg-gray-300"
+              >
+                {isSaving ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
