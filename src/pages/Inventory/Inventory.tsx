@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import { Plus } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import type { InventoryRow } from "../../utils/types";
 import InventoryTable from "../../components/Inventory/InventoryTable";
@@ -9,6 +8,18 @@ import Toolbar from "../../components/Toolbar";
 import Pagination from "../../components/Pagination";
 
 const MIN_DAILY_DEMAND_FOR_CRITICAL = 1;
+
+const getStockMonthKey = (row: InventoryRow) => {
+  const value = row.stockMonth ?? row.month ?? "";
+  if (!value) return "";
+
+  const date = new Date(String(value));
+  if (!Number.isNaN(date.getTime())) {
+    return date.toISOString().slice(0, 7);
+  }
+
+  return String(value).slice(0, 7);
+};
 
 type InventoryFormState = {
   productName: string;
@@ -79,10 +90,7 @@ function Inventory() {
   }, [rows]);
 
   const latestStockMonth = useMemo(() => {
-    const months = rows
-      .map((row) => String(row.stockMonth ?? row.month ?? ""))
-      .filter(Boolean)
-      .sort();
+    const months = rows.map(getStockMonthKey).filter(Boolean).sort();
 
     return months.at(-1) ?? "";
   }, [rows]);
@@ -91,7 +99,7 @@ function Inventory() {
     const query = search.trim().toLowerCase();
 
     return rows.filter((row) => {
-      const rowMonth = String(row.stockMonth ?? row.month ?? "");
+      const rowMonth = getStockMonthKey(row);
       const isLatestMonth = !latestStockMonth || rowMonth === latestStockMonth;
 
       const stock = Number(row.stock ?? row.current ?? 0);
@@ -277,11 +285,6 @@ function Inventory() {
               : "Showing the inventory data uploaded during onboarding."}
           </p>
         </div>
-
-        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 bg-black px-4 py-2.5 text-white shadow-sm transition-all hover:bg-gray-900 active:scale-95">
-          <Plus size={20} />
-          <span className="text-sm font-semibold">New Item</span>
-        </button>
       </div>
 
       {isLowStockFilter && (
@@ -375,7 +378,6 @@ function Inventory() {
                           [key]: event.target.value,
                         }))
                       }
-                      
                       readOnly={isReadOnly}
                       className={`rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 ${
                         isReadOnly
