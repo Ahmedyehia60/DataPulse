@@ -103,7 +103,7 @@ function InventoryTable({
                   ) : column.toLowerCase().trim() === "id" ? (
                     pageStartIndex + rowIndex + 1
                   ) : (
-                    renderCellValue(column, row[column], row)
+                    renderCellValue(column, row[column])
                   )}
                 </td>
               ))}

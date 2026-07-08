@@ -5,7 +5,6 @@ import { LowStockSection } from "../../components/analytics/LowStockSection";
 import { SalesTrendChart } from "../../components/analytics/charts/SalesTrendChart";
 import { ForecastChart } from "../../components/analytics/charts/ForecastChart";
 import { TopProductsChart } from "../../components/analytics/charts/TopProductsChart";
-import { TrendingUpDown } from "lucide-react";
 
 function Analytics() {
   const data = useAnalyticsData();
@@ -35,11 +34,6 @@ function Analytics() {
             Sales performance, forecasting & inventory insights
           </p>
         </div>
-
-        <button className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-200 bg-black px-4 py-2.5 text-white shadow-sm transition-all hover:bg-gray-900 active:scale-95">
-          <TrendingUpDown size={20} />
-          <span className="text-sm font-semibold">Show Live Analytics</span>
-        </button>
       </div>
 
       <Alerts isDropComing={data.isDropComing} />
