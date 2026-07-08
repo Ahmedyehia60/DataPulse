@@ -43,9 +43,7 @@ const TrendingProducts = ({ products }: Props) => {
                   <p className="truncate text-[14px] font-semibold text-gray-900 mb-0.5">
                     {item.name}
                   </p>
-                  <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider">
-                    {item.category || "Uncategorized"}
-                  </span>
+        
                 </div>
               </div>
 
